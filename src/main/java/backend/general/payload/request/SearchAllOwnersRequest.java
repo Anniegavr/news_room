@@ -1,0 +1,13 @@
+package backend.general.payload.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class SearchAllOwnersRequest {
+    private Long userId;
+    private String userName;
+}
