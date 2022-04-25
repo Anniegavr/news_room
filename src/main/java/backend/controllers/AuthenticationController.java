@@ -29,6 +29,8 @@ import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static backend.models.ERole.EDITOR;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -103,10 +105,10 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        Owner user = new Owner(signUpRequest.getUsername(),signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
+        Owner user = new Owner(signUpRequest.getUsername(),signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()), signUpRequest.getRoles());
 
         Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName(ERole.SUBSCRIBER)
+        Role userRole = roleRepository.findByName(EDITOR)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         roles.add(userRole);
 

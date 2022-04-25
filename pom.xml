@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>backend.models</groupId>
-    <artifactId>news.room.server</artifactId>
+    <artifactId>news.room</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>backend.server</name>
-    <description>Lab project for Web Programming</description>
+    <name>news.room</name>
+    <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
         <changeLogFile>changelog-master.xml</changeLogFile>

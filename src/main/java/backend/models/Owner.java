@@ -43,15 +43,23 @@ public class Owner implements UserDetails{
      * many to many relationship and join the corresponding columns
      * into the new table: owner_roles.
      */
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "owner_roles", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "roles",
+            joinColumns = @JoinColumn(
+                    name = "owner_id", referencedColumnName = "owner_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "owner_roles", joinColumns = @JoinColumn(name = "owner_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Set<Role> roles = new HashSet<>();
 
-
-    public Owner(String username, String email, String encode) {
+    public Owner(String username, String email, String encode, Set<Role> roles) {
         this.username = username;
         this.email = email+"@pm.com";
         this.password = encode;
+        this.roles = roles;
     }
 
     @Override

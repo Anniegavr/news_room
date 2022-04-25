@@ -47,7 +47,7 @@ public class OwnerDetailsImpl implements UserDetails {
      */
     public static OwnerDetailsImpl build(Owner owner) {
         List<GrantedAuthority> authorities = owner.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
 
         return new OwnerDetailsImpl(

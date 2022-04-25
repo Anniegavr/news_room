@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import backend.dao.OwnerRepository;
 import backend.models.Owner;
 
+
 /** The UserDetailsService interface has a method to load User by username and returns a UserDetails object
  * that Spring Security can use for authentication and validation. */
 @Service

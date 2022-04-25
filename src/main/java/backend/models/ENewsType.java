@@ -1,6 +1,6 @@
 package backend.models;
 
-public enum NewsType {
+public enum ENewsType {
     PUBLIC,
     PRIVATE,
     PROTECTED
