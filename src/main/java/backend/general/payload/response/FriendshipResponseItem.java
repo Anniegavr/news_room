@@ -2,9 +2,9 @@ package backend.general.payload.response;
 
 import lombok.Getter;
 import lombok.Setter;
-import backend.models.Friendship;
-import backend.models.new_friend.EStatus;
-import backend.models.new_friend.FriendshipRequestAccepted;
+import backend.model.Friendship;
+import backend.model.new_friend.EStatus;
+import backend.model.new_friend.FriendshipRequestAccepted;
 
 @Getter
 @Setter

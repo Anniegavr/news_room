@@ -3,9 +3,8 @@ package backend.service.security.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import backend.dao.FriendshipRepository;
-import backend.dao.OwnerRepository;
-import backend.models.Friendship;
+import backend.repository.FriendshipRepository;
+import backend.model.Friendship;
 
 import java.util.ArrayList;
 import java.util.List;

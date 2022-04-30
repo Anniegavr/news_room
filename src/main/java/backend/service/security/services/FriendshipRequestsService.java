@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import backend.dao.FriendshipRequestsRepository;
-import backend.dao.OwnerRepository;
+import backend.repository.FriendshipRequestsRepository;
 import backend.general.payload.response.FriendshipRequests;
-import backend.models.new_friend.FriendshipRequestCreated;
+import backend.model.new_friend.FriendshipRequestCreated;
 
 import java.util.ArrayList;
 import java.util.List;

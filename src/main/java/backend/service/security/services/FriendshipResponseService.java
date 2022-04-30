@@ -3,22 +3,20 @@ package backend.service.security.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import backend.dao.FriendshipRepository;
-import backend.dao.FriendshipRequestsRepository;
-import backend.dao.FriendshipResponsesRepository;
-import backend.dao.OwnerRepository;
+import backend.repository.FriendshipRepository;
+import backend.repository.FriendshipRequestsRepository;
+import backend.repository.FriendshipResponsesRepository;
 import backend.general.payload.response.FriendshipResponse;
 import backend.general.payload.response.FriendshipResponseItem;
-import backend.models.Friendship;
-import backend.models.Owner;
-import backend.models.new_friend.FriendshipRequestAccepted;
-import backend.models.new_friend.FriendshipRequestCreated;
+import backend.model.Friendship;
+import backend.model.new_friend.FriendshipRequestAccepted;
+import backend.model.new_friend.FriendshipRequestCreated;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static backend.models.new_friend.EStatus.ACCEPT;
+import static backend.model.new_friend.EStatus.ACCEPT;
 
 @Service
 //@AllArgsConstructor

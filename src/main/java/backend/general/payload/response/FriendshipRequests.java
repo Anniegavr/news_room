@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import backend.models.new_friend.FriendshipRequestCreated;
+import backend.model.new_friend.FriendshipRequestCreated;
 
 import java.util.List;
 

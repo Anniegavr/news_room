@@ -11,7 +11,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
-import backend.dao.OwnerRepository;
 
 //@RequiredArgsConstructor //Didn't use this, because it doesn't allow an empty constructor to be initialised, whilst I need it to
 @NoArgsConstructor

@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import backend.dao.OwnerRepository;
-import backend.dao.RefreshTokenRepository;
-import backend.models.RefreshToken;
+import backend.repository.RefreshTokenRepository;
+import backend.model.RefreshToken;
 import backend.service.security.jwt.TokenRefreshException;
 
 import java.time.Instant;

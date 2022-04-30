@@ -7,10 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import backend.general.payload.response.FriendshipRequests;
-import backend.models.new_friend.FriendshipRequestCreated;
+import backend.model.new_friend.FriendshipRequestCreated;
 import backend.service.security.jwt.AuthEntryPointJwt;
 import backend.service.security.services.FriendshipRequestsService;
-import backend.service.security.services.OwnerDetailsServiceImpl;
 
 @RestController
 @RequiredArgsConstructor

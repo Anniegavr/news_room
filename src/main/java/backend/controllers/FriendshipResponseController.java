@@ -6,10 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import backend.models.new_friend.FriendshipRequestAccepted;
+import backend.model.new_friend.FriendshipRequestAccepted;
 import backend.service.security.jwt.AuthEntryPointJwt;
 import backend.service.security.services.FriendshipResponseService;
-import backend.service.security.services.OwnerDetailsServiceImpl;
 
 
 @RestController
