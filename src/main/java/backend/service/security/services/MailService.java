@@ -1,8 +1,9 @@
 package backend.service.security.services;
 
+import backend.repository.UserRepository;
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
+
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 //@RequiredArgsConstructor //Didn't use this, because it doesn't allow an empty constructor to be initialised, whilst I need it to
 @NoArgsConstructor
@@ -21,25 +24,25 @@ public class MailService {
     private static final Logger logger = LoggerFactory.getLogger(MailService.class);
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private OwnerDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     @Qualifier("gmail")
     private JavaMailSender mailSender;
 
     public void sendMail(String subject, String toAddresses, String ccAddresses, String bccAddresses, String body) {
-        String from = ownerRepository.findById(userDetailsService.getUserIdFromToken()).get().getUsername();
+        String from = userRepository.findById(userDetailsService.getUserIdFromToken()).get().getUsername();
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(toAddresses.split("[,;]"));
             message.setFrom(from, "<From Name>");
             message.setSubject(subject);
-            if (StringUtils.isNotBlank(ccAddresses))
+            if (isNotBlank(ccAddresses))
                 message.setCc(ccAddresses.split("[;,]"));
-            if (StringUtils.isNotBlank(bccAddresses))
+            if (isNotBlank(bccAddresses))
                 message.setBcc(bccAddresses.split("[;,]"));
             message.setText(body, false); //or true, for multimedia emails
         };

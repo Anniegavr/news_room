@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import backend.service.security.jwt.AuthEntryPointJwt;
 import backend.service.security.services.FriendshipService;
 
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class FriendshipController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(FriendshipController.class);
 
     private final FriendshipService friendshipService;
 

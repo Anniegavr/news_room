@@ -1,5 +1,6 @@
 package backend.service.security.services;
 
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -10,13 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@NoArgsConstructor
-//@AllArgsConstructor
 @RequiredArgsConstructor
 @Service
 public class FriendshipService {
-    private final OwnerRepository ownerRepository;
-    private final OwnerDetailsServiceImpl ownerDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final FriendshipRepository friendshipRepository;
 
 
@@ -34,8 +32,8 @@ public class FriendshipService {
      * @return a Friendship object
      */
     public Friendship checkForFriendship(Long frTwoId){
-        Optional<Friendship> try1 = friendshipRepository.findFriendshipByUserOneIdAndUserTwoId(ownerDetailsService.getUserIdFromToken(), frTwoId);
-        Optional<Friendship> try2 = friendshipRepository.findFriendshipByUserOneIdAndUserTwoId(frTwoId,ownerDetailsService.getUserIdFromToken());
+        Optional<Friendship> try1 = friendshipRepository.findFriendshipByUserOneIdAndUserTwoId(userDetailsService.getUserIdFromToken(), frTwoId);
+        Optional<Friendship> try2 = friendshipRepository.findFriendshipByUserOneIdAndUserTwoId(frTwoId, userDetailsService.getUserIdFromToken());
         if (try1.isPresent()){
             return try1.get();
         } else if (try2.isPresent()){
@@ -50,7 +48,8 @@ public class FriendshipService {
      */
     public List<?> getFriendshipById() {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long userId = ownerRepository.findOwnerByUsername(currentUser).get().getOwnerId();
+        Long userId = userDetailsService.getUserIdFromToken();
+
         return friendshipRepository.findFriendshipsByUserOneIdEqualsOrUserTwoIdEquals(userId, userId);
     }
 

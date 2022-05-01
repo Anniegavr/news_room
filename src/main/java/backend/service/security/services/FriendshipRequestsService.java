@@ -1,5 +1,7 @@
 package backend.service.security.services;
 
+import backend.repository.UserRepository;
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,10 @@ public class FriendshipRequestsService {
     private FriendshipRequestsRepository friendshipRequestsRepository;
 
     @Autowired
-    private OwnerRepository ownerRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    private OwnerDetailsServiceImpl ownerDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
     /**
      * @param frRequest - contains the senderID - automatically retrieved from JWT, the receiverID and the publicKey
      * @return a ResponseEntity containing info about an object of type FriendshipRequestCreated with
@@ -31,7 +33,7 @@ public class FriendshipRequestsService {
      */
     public Object registerRequest(FriendshipRequestCreated frRequest) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long userId = ownerRepository.findOwnerByUsername(currentUser).get().getOwnerId();
+        Long userId = userRepository.findUserByUsername(currentUser).getId();
         frRequest.setSenderId(userId);
         frRequest.setSenderUsername(currentUser);
 
@@ -60,7 +62,7 @@ public class FriendshipRequestsService {
      * displaying the friendship requests sent by the current user
      */
     public List<?> getAllSentFrRequests() {
-        Long userId = ownerDetailsService.getUserIdFromToken();
+        Long userId = userDetailsService.getUserIdFromToken();
         return new ArrayList<>(friendshipRequestsRepository.findBySenderId(userId));
     }
 
@@ -69,7 +71,7 @@ public class FriendshipRequestsService {
      * displaying info about friendship requests received by the current user
      */
     public FriendshipRequests getAllReceivedFrRequests() {
-        Long userId = ownerDetailsService.getUserIdFromToken();
+        Long userId = userDetailsService.getUserIdFromToken();
         List<FriendshipRequestCreated> requestsList = new ArrayList<>();
         requestsList.addAll(friendshipRequestsRepository.findFriendshipRequestCreatedByReceiverId(userId));
 

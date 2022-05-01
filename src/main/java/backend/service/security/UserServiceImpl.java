@@ -1,8 +1,8 @@
 package backend.service.security;
 
-import com.newsroom.lab5_3.model.User;
-import com.newsroom.lab5_3.repository.RoleRepository;
-import com.newsroom.lab5_3.repository.UserRepository;
+import backend.model.User;
+import backend.repository.RoleRepository;
+import backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findUserByUsername(username);
     }
 }

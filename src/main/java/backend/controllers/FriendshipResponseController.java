@@ -1,5 +1,6 @@
 package backend.controllers;
 
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import backend.model.new_friend.FriendshipRequestAccepted;
-import backend.service.security.jwt.AuthEntryPointJwt;
 import backend.service.security.services.FriendshipResponseService;
 
 
@@ -15,10 +15,10 @@ import backend.service.security.services.FriendshipResponseService;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class FriendshipResponseController{
-    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(FriendshipResponseController.class);
 
     private final FriendshipResponseService friendshipResponseService;
-    private final OwnerDetailsServiceImpl ownerDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
 
     /**
@@ -51,7 +51,7 @@ public class FriendshipResponseController{
 
             return new ResponseEntity<>(friendshipResponseService.getAllByRequests(), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Couldn't retrieve answered friendship requests for user "+ownerDetailsService.getUserIdFromToken());
+            logger.error("Couldn't retrieve answered friendship requests for user "+userDetailsService.getUserIdFromToken());
             return ResponseEntity.status(204).body("An unexpected error occurred");
         }
     }
@@ -61,7 +61,7 @@ public class FriendshipResponseController{
         try {
             return new ResponseEntity<>(friendshipResponseService.getResponsesToMyRequests(), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Couldn't obtain responses to friendship requests for user "+ ownerDetailsService.getUserIdFromToken());
+            logger.error("Couldn't obtain responses to friendship requests for user "+ userDetailsService.getUserIdFromToken());
             return ( ResponseEntity.status(204).body("An unexpected error occurred"));
         }
     }

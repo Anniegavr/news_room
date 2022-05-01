@@ -1,11 +1,12 @@
 package backend.service.security;
 
-import com.newsroom.lab5_3.model.Role;
-import com.newsroom.lab5_3.model.User;
-import com.newsroom.lab5_3.repository.UserRepository;
+import backend.model.Role;
+import backend.model.User;
+import backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findUserByUsername(username);
         if (user == null) throw new UsernameNotFoundException(username);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -32,5 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         }
 
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+    }
+
+    @Transactional
+    public long getUserIdFromToken() {
+        String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findUserByUsername(currentUser).getId();
     }
 }

@@ -1,7 +1,7 @@
 package backend.service.security;
 
 
-import com.newsroom.lab5_3.model.User;
+import backend.model.User;
 
 public interface UserService {
     void save(User user);

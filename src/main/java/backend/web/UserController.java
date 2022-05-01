@@ -1,8 +1,8 @@
 package backend.web;
 
-import com.newsroom.lab5_3.model.User;
-import com.newsroom.lab5_3.service.SecurityService;
-import com.newsroom.lab5_3.service.UserService;
+import backend.model.User;
+import backend.service.security.SecurityService;
+import backend.service.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

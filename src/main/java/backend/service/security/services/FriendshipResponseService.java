@@ -1,5 +1,8 @@
 package backend.service.security.services;
 
+import backend.model.User;
+import backend.repository.UserRepository;
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -29,9 +32,9 @@ public class FriendshipResponseService {
 
     private final FriendshipRepository friendshipRepository;
 
-    private final OwnerRepository ownerRepository;
+    private final UserRepository userRepository;
 
-    private final OwnerDetailsServiceImpl ownerDetailsService;
+    private final UserDetailsServiceImpl UserDetailsService;
 
 
     /**
@@ -43,11 +46,11 @@ public class FriendshipResponseService {
      */
     public Object registerResponse(FriendshipRequestAccepted frResponse) {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long currentUserId = ownerDetailsService.getUserIdFromToken();
+        Long currentUserId = UserDetailsService.getUserIdFromToken();
 
         frResponse.setRequestAccepter(currentUserId);
         frResponse.setAccepterUsername(currentUser);
-        Optional<Owner> initiatorUser = ownerRepository.findById(frResponse.getFrInitiatorId());
+        Optional<User> initiatorUser = userRepository.findById(frResponse.getFrInitiatorId());
         if (initiatorUser.isPresent() && friendshipRequestsRepository.existsFriendshipRequestCreatedBySenderIdAndAndReceiverId(frResponse.getFrInitiatorId(), frResponse.getRequestAccepter())) {
             frResponse.setInitiatorUsername(initiatorUser.get().getUsername());
 
@@ -95,7 +98,7 @@ public class FriendshipResponseService {
      */
     public List getAllByRequests() {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long accepterId = ownerRepository.findOwnerByUsername(currentUser).get().getOwnerId();
+        Long accepterId = userRepository.findUserByUsername(currentUser).getId();
         List<FriendshipRequestAccepted> requestsList = new ArrayList<>();
         requestsList.addAll(friendshipResponsesRepository.getAllByRequestAccepter(accepterId));
         return requestsList;
@@ -103,7 +106,7 @@ public class FriendshipResponseService {
 
     public FriendshipResponse getResponsesToMyRequests() {
         String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long initiatorId = ownerRepository.findOwnerByUsername(currentUser).get().getOwnerId();
+        Long initiatorId = userRepository.findUserByUsername(currentUser).getId();
         List<FriendshipRequestAccepted> responsesList = new ArrayList<>();
         List<FriendshipResponseItem> responsesListItems = new ArrayList<>();
         responsesList.addAll(friendshipResponsesRepository.getAllByFrInitiatorId(initiatorId));
@@ -112,7 +115,7 @@ public class FriendshipResponseService {
             Optional<Friendship> friendshipTry = friendshipRepository.findFriendshipByUserOneIdAndUserTwoId(initiatorId, item.getRequestAccepter());
             if (friendshipTry.isPresent()){
                 Friendship friendship = friendshipTry.get();
-                item.setAccepterUsername(ownerRepository.findById(item.getRequestAccepter()).get().getUsername());
+                item.setAccepterUsername(userRepository.findById(item.getRequestAccepter()).get().getUsername());
                 FriendshipResponseItem new_response = new FriendshipResponseItem(friendship, item);
                 responsesListItems.add(new_response);
             }

@@ -1,5 +1,6 @@
 package backend.controllers;
 
+import backend.service.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,17 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import backend.general.payload.response.FriendshipRequests;
 import backend.model.new_friend.FriendshipRequestCreated;
-import backend.service.security.jwt.AuthEntryPointJwt;
 import backend.service.security.services.FriendshipRequestsService;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class FriendshipRequestsController {
-    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+    private static final Logger logger = LoggerFactory.getLogger(FriendshipRequestsController.class);
 
     private final FriendshipRequestsService friendshipRequestsService;
-    private final OwnerDetailsServiceImpl ownerDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
 
     /**
@@ -56,7 +56,7 @@ public class FriendshipRequestsController {
             }
             return new ResponseEntity<>(friendshipRequestsService.getAllSentFrRequests(), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("No content was found for friendship requests sent by user "+ownerDetailsService.getUserIdFromToken());
+            logger.error("No content was found for friendship requests sent by user "+ userDetailsService.getUserIdFromToken());
             return ResponseEntity.badRequest().body("An unexpected error occurred");
         }
     }

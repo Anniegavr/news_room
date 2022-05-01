@@ -1,8 +1,8 @@
 package backend.repository;
 
-import com.newsroom.lab5_3.model.User;
+import backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String username);
+    User findUserByUsername(String username);
 }
