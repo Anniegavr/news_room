@@ -3,6 +3,8 @@ package backend.web;
 import backend.model.User;
 import backend.service.security.SecurityService;
 import backend.service.security.UserService;
+import backend.service.security.UserServiceImpl;
+import backend.service.security.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,12 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    private UserServiceImpl userServiceImpl;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -66,5 +74,16 @@ public class UserController {
     @GetMapping({"/", "/welcome"})
     public String welcome(Model model) {
         return "newsroom";
+    }
+
+    @PostMapping("/subscribe")
+    public String subscribe(@ModelAttribute("subscribeForm") User subscribeForm, BindingResult bindingResult) {
+        userValidator.validate(subscribeForm, bindingResult);
+
+        userServiceImpl.setUserSubscribedById(subscribeForm.getId());
+
+        mailService.sendMail("Subscription to News Room", subscribeForm.getEmail(), "", "", "Thank you for subscribing to News Room!");
+
+        return "redirect:/welcome";
     }
 }

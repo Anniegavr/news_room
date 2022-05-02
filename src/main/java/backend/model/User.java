@@ -24,4 +24,8 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+    private boolean subscribed;
+
+    private String email;
 }

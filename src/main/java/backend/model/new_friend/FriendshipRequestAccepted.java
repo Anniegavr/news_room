@@ -27,7 +27,7 @@ public class FriendshipRequestAccepted {
     private String initiatorUsername;
     private long requestAccepter;
     private String accepterUsername;
-    @Column(columnDefinition="TEXT")
+//    @Column(columnDefinition="TEXT")
     private String symmetricKey;
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -42,13 +42,5 @@ public class FriendshipRequestAccepted {
         this.symmetricKey = symmetricKey;
         this.status = status;
     }
-//
-//    public FriendshipRequestAccepted(long responseToRequestId, long frInitiatorId, long requestAccepter, String accepterUsername, String symmetricKey, EStatus status) {
-//        this.responseToRequestId = responseToRequestId;
-//        this.frInitiatorId = frInitiatorId;
-//        this.requestAccepter = requestAccepter;
-//        this.accepterUsername = accepterUsername;
-//        this.symmetricKey = symmetricKey;
-//        this.status = status;
-//    }
+
 }
