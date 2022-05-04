@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
-    <title>Create an account</title>
+    <title>News Room</title>
 
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
@@ -14,35 +16,31 @@
 <body>
 <div class="container">
     <div sec:authorize="isAuthenticated()">
-        <form id="subscribeForm" method="POST" th:action="@{/subscribe}">
+        <form id="logoutForm" method="POST" th:action="@{/logout}">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         </form>
 
-        <div th:fragment="logoutForm">
-            <form id="logoutForm" th:action="@{/logout}"
-                  method="post" th:hidden="true" name="logoutForm">
-                <input type="submit" value="Logout" />
-            </form>
-        </div>
-        <div th:fragment="logout_header">
-            <div class="row">
-                <div class="col-xs-12 text-right">
-                    <a href="javascript: document.logoutForm.submit();"
-                       sec:authorize="isAuthenticated()">Logout</a>
-                </div>
-            </div>
-        </div>
-<!--        <h2>Welcome <span sec:authentication="name"></span> | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>-->
+        <h2>Welcome <span sec:authentication="name"></span> | <a onclick="document.forms['logoutForm'].submit()">Logout</a></h2>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <form id="loginForm" method="GET" th:action="@{/login}">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+
+        <a onclick="document.forms['loginForm'].submit()">Login</a>
     </div>
     <div class="container">
         <header class="blog-header py-3">
             <div class="row flex-nowrap justify-content-between align-items-center">
                 <div class="col-4 pt-1">
-                    <a class="link-secondary" href="#" onclick="document.forms['subscribeForm'].submit()">Subscribe</a>
+                    <form id="subscribeForm" method="POST" th:action="@{/subscribe}">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <a class="link-secondary" href="#">Subscribe</a>
+                    </form>
 
                 </div>
-                <div class="col-4 text-center">
-                    <a class="blog-header-logo text-dark" href="#">Large</a>
+                <div class="col-4 text-center" style="color: #2b74b1">
+                    <p class="blog-header-logo text-dark" style="font-family: -apple-system Samanata; font-weight: bolder; font-size: larger;"  href="#">World's Best News In One Place</p>
                 </div>
                 <div class="col-4 d-flex justify-content-end align-items-center">
                     <a class="link-secondary" href="#" aria-label="Search">
@@ -53,7 +51,7 @@
             </div>
         </header>
 
-        <div class="nav-scroller py-1 mb-2" th:id="protected">
+        <div class="nav-scroller py-1 mb-2">
             <nav class="nav d-flex justify-content-between">
                 <a class="p-2 link-secondary" href="#">World</a>
                 <a class="p-2 link-secondary" href="#">U.S.</a>
@@ -71,94 +69,74 @@
         </div>
     </div>
 
-    <main class="container">
+    <main class="container" th:switch="${user.role}">
+        <div sec:authorize="hasRole('ADMIN')">
+            This content is only shown to administrators.§§
+        </div>
         <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
             <div class="col-md-6 px-0 protected">
-                <h1 class="display-4 fst-italic">Title of a publicly featured blog post</h1>
-                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+                <h1 class="display-4 fst-italic">Right whale spotted in Canadian waters for the first time in 2022</h1>
+                <p class="lead my-3">Federal efforts to protect North Atlantic right whales from extinction are proving successful, as none of the endangered animals died last year as a result of becoming entangled in fishing gear or being struck by shipping vessels. Ross Lord reports on the delicate balancing act to protect the majestic mammals, while keeping the fishing industry running</p>
                 <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
             </div>
+            <img height="300px" src="https://e360.yale.edu/assets/site/_1260x709_crop_center-center/2012-08-21-NEA-N-D300s_No1_105_web.jpg">
         </div>
+
+        <div sec:authorize="isAuthenticated()" class="row mb-2">
             <div class="col-md-6">
                 <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                     <div class="col p-4 d-flex flex-column position-static">
-                        <strong class="d-inline-block mb-2 text-success">Design</strong>
-                        <h3 class="mb-0">Post title</h3>
-                        <div class="mb-1 text-muted">Nov 11</div>
-                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="stretched-link">Continue reading</a>
+                        <strong class="d-inline-block mb-2 text-primary">World</strong>
+                        <h3 class="mb-0">Blake Lively transforms at the Met Gala in architecture-inspired Versace gown</h3>
+                        <div class="mb-1 text-muted">May 03</div>
+                        <p class="card-text mb-auto">Blake Lively paid tribute to New York City architecture in a shimmering gown that dramatically transformed as she walked the Met Gala red carpet on Monday night. "'Who's actually going to be counting the stones?'" she recalled Schwartz asking her. "'Me, I'm a Virgo,'" she replied with a laugh. "This year was especially nervewracking being one of the hosts," she told Anthony. "I thought a neat perspective on the theme would be looking at the city that I love so much and the architecture, rather than just the fashion."</p>
+                        <a href="#" class="stretched-link"></br>Continue reading</br>You can see this post, because you're a member of our community </a>
                     </div>
                     <div class="col-auto d-none d-lg-block">
-                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        <img class="bd-placeholder-img" src="https://dynaimage.cdn.cnn.com/cnn/q_auto,w_727,c_fit/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F220502195330-02-blake-lively-met-gala-2022.jpg" width="200" height="250" preserveAspectRatio="xMidYMid slice" focusable="false">
 
                     </div>
                 </div>
-        </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">Nature</strong>
+                        <h3 class="mb-0">The central North Pacific Ocean is hiding something massive. </h3>
+                        <div class="mb-1 text-muted">May 02</div>
+                        <p class="mb-auto">Pūhāhonu—Hawaiian for "turtle surfacing for air"—lies about 1100 kilometers northwest of Honolulu. It is a shield volcano—a broad dome that rises about 4500 meters from the sea floor from a single source of molten rock. Pūhāhonu Volcano has a volume of 150,000 cubic kilometers of rock, based on a 2014 sonar survey. Only one-third of that volume is exposed above the sea floor; the rest is buried beneath a ring of debris, broken coral, and other material that has eroded from the peak. Pūhāhonu is so heavy, researchers note, that it has caused Earth's crust nearby—and thus the volcano itself—to sink hundreds of meters over millions of years.</p>
+                        <a href="#" class="stretched-link">
+                            Continue reading </br>You can see this post, because you're a member of our community </a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img width="200" height="250" src="https://www.science.org/do/10.1126/science.abc7615/full/GardnerPinnacles-1280x720.jpg">
 
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row g-5">
             <div class="col-md-8">
-                <h3 class="pb-4 mb-4 fst-italic border-bottom">
-                    From the Firehose
-                </h3>
 
                 <article class="blog-post">
-                    <h2 class="blog-post-title">Sample blog post</h2>
+                    <h2 class="blog-post-title">A Quiet Revolution: Southwest Cities Learn to Thrive Amid Drought</h2>
+                    <p class="blog-post-meta">April 26, 2022 by <a href="https://e360.yale.edu/authors/jim-robbins-photography-by-ted-wood">Jim Robbins</a></p>
 
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Upvotes</th>
-                            <th>Downvotes</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Alice</td>
-                            <td>10</td>
-                            <td>11</td>
-                        </tr>
-                        <tr>
-                            <td>Bob</td>
-                            <td>4</td>
-                            <td>3</td>
-                        </tr>
-                        <tr>
-                            <td>Charlie</td>
-                            <td>7</td>
-                            <td>9</td>
-                        </tr>
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <td>Totals</td>
-                            <td>21</td>
-                            <td>23</td>
-                        </tr>
-                        </tfoot>
-                    </table>
+                    <p style="font-family: 'Playfair Display'">
+                        Facing a changing climate, some southwestern U.S. cities such as San Diego, Phoenix, and Las Vegas have embraced innovative strategies for conserving and sourcing water, providing these metropolitan areas with sufficient water supplies to support their growing populations.
+                    </p>
+                    <hr>
+                    <p>
+                        n the rolling hills around San Diego and its suburbs, the rumble of bulldozers and the whine of power saws fill the air as a slew of new homes and apartments rise up. The region is booming, its population growing at a rate of about 1 percent a year.
 
-                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
+                        This, in spite of the fact that Southern California, along with much of the West, is in the midst of what experts call a megadrought that some believe may not be a temporary, one-off occurrence, but a recurring event or even a climate change-driven permanent “aridification” of the West. The drought is so bad that last year federal officials ordered cuts to water provided to the region by the Colorado River for the first time in history.
+
+                        Water officials in San Diego, though, say they are not worried. “We have sufficient supplies now and in the future,” said Sandra Kerl, general manager of the San Diego Water Authority. “We recently did a stress test, and we are good until 2045” and even beyond.
+
+                        San Diego is not alone. While the public image may be that booming southwestern cities such as San Diego, Phoenix, Las Vegas, and Albuquerque are on the verge of a climate apocalypse, many experts agree that these metropolitan areas have enough of a water cushion to not only survive, but continue to grow into the surrounding desert for the foreseeable future, even during the worst drought in 1,200 years. Regardless of what the future holds, the search for water savings and more supply has so far been largely successful.
+                    </p>
                 </article>
-
-                <article class="blog-post">
-                    <h2 class="blog-post-title">New feature</h2>
-                    <p class="blog-post-meta">December 14, 2020 by <a href="#">Chris</a></p>
-
-                    <p>This is some additional paragraph placeholder content. It has been written to fill the available space and show how a longer snippet of text affects the surrounding content. We'll repeat it often to keep the demonstration flowing, so be on the lookout for this exact same string of text.</p>
-                    <ul>
-                        <li>First list item</li>
-                        <li>Second list item with a longer description</li>
-                        <li>Third list item to close it out</li>
-                    </ul>
-                    <p>This is some additional paragraph placeholder content. It's a slightly shorter version of the other highly repetitive body text used throughout.</p>
-                </article>
-
-                <nav class="blog-pagination" aria-label="Pagination">
-                    <a class="btn btn-outline-primary" href="#">Older</a>
-                    <a class="btn btn-outline-secondary disabled">Newer</a>
-                </nav>
 
             </div>
 
@@ -166,7 +144,11 @@
                 <div class="position-sticky" style="top: 2rem;">
                     <div class="p-4 mb-3 bg-light rounded">
                         <h4 class="fst-italic">About</h4>
-                        <p class="mb-0">Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you.</p>
+                        <p class="mb-0">Newsroom SRL, a local company which runs a site for business news, has a dedicated team of publishers and developers
+                        that bring all the world's best news into a single space - News Room. We hope you will enjoy it! <hr> Note that only subscribers can see our
+                        special posts - we call them "private". Guests can still get access to non-public posts from the categories displayed above.
+                        However, you need a password for that. Send an email to us and we will provide you the password.
+                        Or... become a member and gain full access!</p>
                     </div>
 
                     <div class="p-4">
@@ -202,7 +184,7 @@
     </main>
 
     <footer class="blog-footer">
-<!--        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a href="https://twitter.com/mdo">@mdo</a>.</p>-->
+        <hr><p>Would you like to become a creator and publish your own posts?</br> Contact us at <a href="#">news.roo@localhost.org</a></p>
         <p>
             <a href="#">Back to top</a>
         </p>
@@ -212,7 +194,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>-->
 <script src="/js/main.js"></script>
 </body>
 </html>
