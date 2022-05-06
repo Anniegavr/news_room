@@ -53,7 +53,7 @@ public class UserController {
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "redirect:/welcome";
+        return "redirect:/newsroom";
     }
 
     @GetMapping("/login")
@@ -71,7 +71,7 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping({"/", "/welcome"})
+    @GetMapping({"/", "/newsroom"})
     public String welcome(Model model) {
         return "newsroom";
     }
@@ -84,6 +84,43 @@ public class UserController {
 
         mailService.sendMail("Subscription to News Room", subscribeForm.getEmail(), "", "", "Thank you for subscribing to News Room!");
 
-        return "redirect:/welcome";
+        return "redirect:/newsroom";
     }
+    
+        //Admins part///////////////////////
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        List<User> listUsers = userService.listAll();
+        model.addAttribute("listUsers", listUsers);
+
+        return "users";
+    }
+
+    @GetMapping("users/user/roles/{id}")
+    public String listURoles(@PathVariable("id") Long id, Model model) {
+        User user = userService.get(id);
+        Set<Role> listURoles = user.getRoles();
+        model.addAttribute("listURoles", listURoles);
+
+        return "roles";
+    }
+
+    @GetMapping("/users/edit/{id}")
+    public String editUser(@PathVariable("id") Long id, Model model) {
+        User user = userService.get(id);
+        List<Role> listRoles = userService.listRoles();
+        model.addAttribute("user", user);
+        model.addAttribute("listRoles", listRoles);
+        return "user_form";
+    }
+
+
+    @PostMapping("/users/save")
+    public String saveUser(User user) {
+        userService.save(user);
+
+        return "redirect:/users";
+    }
+
 }
